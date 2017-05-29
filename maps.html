@@ -38,7 +38,11 @@
             "type": "Feature",
             "properties": {
               "val": 4,
-              "desc": "Pertama kali ada di sana"
+              "desc": "Pertama kali ada di sana",
+              "items": [
+                {"device": "satu"},
+                {"device": "dua"}
+              ]
             },
             "geometry": {
               "type": "Point",
@@ -63,7 +67,16 @@
       var infowindow = new google.maps.InfoWindow();
 
       map.data.addListener('click', function(event) {
-        infowindow.setContent(event.feature.getProperty("desc"));
+        // Preprocessing
+        var content = event.feature.getProperty("desc");
+        var items = event.feature.getProperty("items");
+        if(typeof items != 'undefined') {
+          items.forEach(function(item) {
+            console.log(item.device);
+          });
+        }
+
+        infowindow.setContent(content);
         infowindow.setPosition(event.latLng);
         infowindow.open(map);
       });
